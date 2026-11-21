@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>闲观 · 图标方向提案</title>
+<style>
+  :root{
+    --paper:#F7F5F0;
+    --wall:#EDEAE2;
+    --ink:#1A1C1B;
+    --ink2:#4A4F4C;
+    --ink3:#7C807A;
+    --line:#D9D4C7;
+    --blue:#3D7AFD;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Noto Sans SC","Microsoft YaHei",sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1240px;margin:0 auto;padding:0 64px 96px}
+  .serif{font-family:"Noto Serif SC","Source Han Serif SC","SimSun",serif}
+
+  /* ---------- header ---------- */
+  header{padding:88px 0 0}
+  .eyebrow{
+    font-size:12px;letter-spacing:.22em;color:var(--ink3);
+    text-transform:uppercase;margin-bottom:34px;
+  }
+  h1{
+    font-size:68px;line-height:1.22;font-weight:600;margin:0;
+    letter-spacing:.01em;
+  }
+  .lead{
+    margin:34px 0 0;max-width:790px;
+    font-size:16px;line-height:2;color:var(--ink2);
+    text-wrap:pretty;
+  }
+  .meta{
+    display:flex;gap:28px;flex-wrap:wrap;
+    margin-top:46px;padding-top:18px;border-top:1px solid var(--line);
+    font-size:11px;letter-spacing:.14em;color:var(--ink3);
+  }
+
+  /* ---------- direction ---------- */
+  .direction{
+    display:grid;grid-template-columns:400px 1fr;gap:72px;
+    padding:76px 0 80px;border-top:1px solid var(--line);
+  }
+  .direction:first-of-type{margin-top:64px}
+  .stage{
+    background:var(--wall);
+    padding:38px 38px 30px;
+    display:flex;flex-direction:column;align-items:center;
+  }
+  .primary{width:204px;height:204px}
+  .sizes{
+    display:flex;align-items:flex-end;gap:22px;margin-top:32px;
+    padding-top:22px;border-top:1px solid rgba(0,0,0,.07);
+    width:100%;justify-content:center;
+  }
+  .size{display:flex;flex-direction:column;align-items:center;gap:9px}
+  .size b{font-size:10px;font-weight:500;letter-spacing:.08em;color:var(--ink3)}
+  .s88{width:88px;height:88px}
+  .s48{width:48px;height:48px}
+  .s24{width:24px;height:24px}
+
+  .icon{
+    position:relative;overflow:hidden;background:var(--bg);
+  }
+  /* 自适应图标按真实比例预览：108 图层只露中间 72 安全区 */
+  .icon .art{position:absolute;left:-25%;top:-25%;width:150%;height:150%}
+  .icon svg{width:100%;height:100%;display:block}
+  .icon .m{fill:var(--fg)}
+  .icon .a{fill:var(--accent)}
+  .icon .stroke{fill:none;stroke:var(--fg)}
+
+  .copy .idx{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:30px;height:30px;border:1px solid var(--ink);border-radius:50%;
+    font-size:12px;letter-spacing:.06em;margin-bottom:22px;
+  }
+  h2{font-size:40px;line-height:1.3;font-weight:600;margin:0;letter-spacing:.02em}
+  .tag{
+    margin:12px 0 0;font-size:13px;color:var(--ink3);letter-spacing:.14em;
+  }
+  .desc{
+    margin:26px 0 0;font-size:15px;line-height:2.05;color:var(--ink2);
+    max-width:600px;text-wrap:pretty;
+  }
+  dl{margin:32px 0 0;display:grid;grid-template-columns:74px 1fr;gap:14px 20px}
+  dt{font-size:12px;color:var(--ink3);letter-spacing:.12em;padding-top:2px}
+  dd{margin:0;font-size:14px;line-height:1.95;color:var(--ink2);text-wrap:pretty}
+
+  .colors{display:flex;align-items:center;gap:20px;margin-top:38px;flex-wrap:wrap}
+  .swatch{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--ink3);letter-spacing:.05em}
+  .dot{width:14px;height:14px;border-radius:50%;border:1px solid rgba(0,0,0,.08)}
+  .alt{display:flex;align-items:center;gap:14px;margin-left:auto;padding-left:26px;border-left:1px solid var(--line)}
+  .alt .icon{width:78px;height:78px}
+  .alt span{font-size:11px;color:var(--ink3);letter-spacing:.1em}
+
+  /* ---------- desktop strip ---------- */
+  .tray{border-top:1px solid var(--line);padding-top:70px;margin-top:10px}
+  .tray h3{font-size:14px;font-weight:600;letter-spacing:.16em;margin:0 0 8px}
+  .tray p{font-size:13px;color:var(--ink3);margin:0 0 34px;line-height:1.9}
+  .home{
+    background:#DDE3E6;padding:40px 44px 34px;
+    display:flex;gap:44px;
+  }
+  .app{display:flex;flex-direction:column;align-items:center;gap:10px}
+  .app .icon{width:52px;height:52px;border-radius:27%;box-shadow:0 1px 2px rgba(0,0,0,.12)}
+  .app span{font-size:11px;color:#4C5559;letter-spacing:.08em}
+
+  footer{
+    margin-top:64px;padding-top:22px;border-top:1px solid var(--line);
+    font-size:12px;line-height:2;color:var(--ink3);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">闲观 · 应用图标 / 方向提案</div>
+    <h1 class="serif">学海无涯，闲坐自洽</h1>
+    <p class="lead">
+      现在的图标是一个手指点中靶心，讲的是「替你点屏幕」。但名字讲的是另一件事：学海很大，可以坐着看。
+      三个方向都从名字里长出来——把「学」折成舟，把「闲」开成窗，把「观」凝成一滴水。
+      先看形状是否认得出，再看颜色是否配得上这个 App。
+    </p>
+    <div class="meta">
+      <span>108 DP ADAPTIVE ICON</span>
+      <span>A 书舟 · B 闲窗 · C 墨滴</span>
+      <span>2026.11</span>
+    </div>
+  </header>
+
+  <!-- A -->
+  <section class="direction">
+    <div class="stage">
+      <div class="icon primary" data-icon="A" style="--bg:#3D7AFD;--fg:#FFFFFF;--accent:#FFFFFF;border-radius:26%"></div>
+      <div class="sizes">
+        <div class="size"><div class="icon s88" data-icon="A" style="--bg:#3D7AFD;--fg:#FFFFFF;border-radius:26%"></div><b>88</b></div>
+        <div class="size"><div class="icon s48" data-icon="A" style="--bg:#3D7AFD;--fg:#FFFFFF;border-radius:50%"></div><b>48 圆遮罩</b></div>
+        <div class="size"><div class="icon s24" data-icon="A" style="--bg:#3D7AFD;--fg:#FFFFFF;border-radius:26%"></div><b>24 极限</b></div>
+      </div>
+    </div>
+    <div class="copy">
+      <div class="idx serif">A</div>
+      <h2 class="serif">书舟</h2>
+      <p class="tag">一页作帆，书海为舟</p>
+      <p class="desc">
+        把「学习」折成一张纸帆，把「学海」压成一道低低的船身。没有桨，也没有浪花——船顺着水走。
+        「闲观」不是不学，是不必用力。这是三个方向里最轻的一个，也是唯一继续沿用品牌蓝的一个。
+      </p>
+      <dl>
+        <dt>概念</dt>
+        <dd>「学海无涯」原本是压力，这里把它翻成度假：书页就是帆，人已经在海上。</dd>
+        <dt>结构</dt>
+        <dd>压低船身、竖起桅杆、张一张向右的纸帆；三块实心色，没有一根细线，缩小时不会糊成灰。</dd>
+        <dt>小尺寸</dt>
+        <dd>船身是最大的横向色块，帆是稳定的三角。24dp 仍能读出「帆船」，在桌面上第一眼就认得。</dd>
+      </dl>
+      <div class="colors">
+        <div class="swatch"><i class="dot" style="background:#3D7AFD"></i>#3D7AFD 品牌蓝</div>
+        <div class="swatch"><i class="dot" style="background:#FFFFFF"></i>#FFFFFF 纸白</div>
+        <div class="alt">
+          <div class="icon" data-icon="A" style="--bg:#F3F1EA;--fg:#3D7AFD;border-radius:26%"></div>
+          <span>配色 B<br>纸底蓝标</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- B -->
+  <section class="direction">
+    <div class="stage">
+      <div class="icon primary" data-icon="B" style="--bg:#F6F2E9;--fg:#17303A;--accent:#17303A;border-radius:26%"></div>
+      <div class="sizes">
+        <div class="size"><div class="icon s88" data-icon="B" style="--bg:#F6F2E9;--fg:#17303A;--accent:#17303A;border-radius:26%"></div><b>88</b></div>
+        <div class="size"><div class="icon s48" data-icon="B" style="--bg:#F6F2E9;--fg:#17303A;--accent:#17303A;border-radius:50%"></div><b>48 圆遮罩</b></div>
+        <div class="size"><div class="icon s24" data-icon="B" style="--bg:#F6F2E9;--fg:#17303A;--accent:#17303A;border-radius:26%"></div><b>24 极限</b></div>
+      </div>
+    </div>
+    <div class="copy">
+      <div class="idx serif">B</div>
+      <h2 class="serif">闲窗</h2>
+      <p class="tag">门里有木，窗外有海</p>
+      <p class="desc">
+        「闲」是门里有木。把门开成一扇窗：木格窗把海和落日框在里面。窗外是无涯，窗内是自洽——
+        学习不必出门，坐下就是远方。它离工具类 App 最远，也最像一间属于自己的书房。
+      </p>
+      <dl>
+        <dt>概念</dt>
+        <dd>借「闲」字的门，也借「观」的动作：是看，不是做。一扇窗就把「观」讲完了。</dd>
+        <dt>结构</dt>
+        <dd>圆角窗框、横竖错位的窗棂、右上角一轮小日、左下角一道短波；所有笔画都对齐框线，像木作。</dd>
+        <dt>小尺寸</dt>
+        <dd>方框＋一横一竖的窗棂是最稳的记忆结构，48dp 依然清楚；太阳缩成一个小点，冷暖对比还在。</dd>
+      </dl>
+      <div class="colors">
+        <div class="swatch"><i class="dot" style="background:#F6F2E9;border-color:#C9C1AE"></i>#F6F2E9 纸</div>
+        <div class="swatch"><i class="dot" style="background:#17303A"></i>#17303A 墨青</div>
+        <div class="swatch"><i class="dot" style="background:#D8A54A"></i>#D8A54A 暮金</div>
+        <div class="alt">
+          <div class="icon" data-icon="B" style="--bg:#17303A;--fg:#F3EFE5;--accent:#D8A54A;border-radius:26%"></div>
+          <span>配色 B<br>墨底纸窗</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- C -->
+  <section class="direction">
+    <div class="stage">
+      <div class="icon primary" data-icon="C" style="--bg:#10202E;--fg:#EDF3F7;--accent:#6E9FC0;border-radius:26%"></div>
+      <div class="sizes">
+        <div class="size"><div class="icon s88" data-icon="C" style="--bg:#10202E;--fg:#EDF3F7;--accent:#6E9FC0;border-radius:26%"></div><b>88</b></div>
+        <div class="size"><div class="icon s48" data-icon="C" style="--bg:#10202E;--fg:#EDF3F7;--accent:#6E9FC0;border-radius:50%"></div><b>48 圆遮罩</b></div>
+        <div class="size"><div class="icon s24" data-icon="C" style="--bg:#10202E;--fg:#EDF3F7;--accent:#6E9FC0;border-radius:26%"></div><b>24 极限</b></div>
+      </div>
+    </div>
+    <div class="copy">
+      <div class="idx serif">C</div>
+      <h2 class="serif">墨滴</h2>
+      <p class="tag">一滴入海，涟漪自洽</p>
+      <p class="desc">
+        一滴墨落进学海，涟漪一圈圈散开。学习是入水那一下，闲坐是等水面重新平静。
+        它比 A、B 都更抽象，也更像一枚当代品牌的标记——不解释，只留下一个形状。
+      </p>
+      <dl>
+        <dt>概念</dt>
+        <dd>用「一滴」代替「一本书」，把学习缩到最小的动作；重量在滴，余韵在波。</dd>
+        <dt>结构</dt>
+        <dd>上实下虚：一枚实心墨滴，两道错开的水波；波峰不求对称，只求平静——正是「自洽」。</dd>
+        <dt>小尺寸</dt>
+        <dd>墨滴本身就是可识别单元，水波可以舍；做单色通知图标时只留墨滴也成立。</dd>
+      </dl>
+      <div class="colors">
+        <div class="swatch"><i class="dot" style="background:#10202E"></i>#10202E 深海</div>
+        <div class="swatch"><i class="dot" style="background:#EDF3F7;border-color:#C7CED4"></i>#EDF3F7 月白</div>
+        <div class="swatch"><i class="dot" style="background:#6E9FC0"></i>#6E9FC0 涟漪</div>
+        <div class="alt">
+          <div class="icon" data-icon="C" style="--bg:#3D7AFD;--fg:#FFFFFF;--accent:#BCD6FF;border-radius:26%"></div>
+          <span>配色 B<br>钴蓝白滴</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="tray">
+    <h3>放在桌面上的实际大小</h3>
+    <p>从左到右：书舟 / 闲窗 / 墨滴。图标在 52dp 时的第一眼印象，决定了用户会不会打开它。</p>
+    <div class="home">
+      <div class="app">
+        <div class="icon" data-icon="A" style="--bg:#3D7AFD;--fg:#FFFFFF;border-radius:27%"></div>
+        <span>闲观 · 书舟</span>
+      </div>
+      <div class="app">
+        <div class="icon" data-icon="B" style="--bg:#F6F2E9;--fg:#17303A;--accent:#17303A;border-radius:27%"></div>
+        <span>闲观 · 闲窗</span>
+      </div>
+      <div class="app">
+        <div class="icon" data-icon="C" style="--bg:#10202E;--fg:#EDF3F7;--accent:#6E9FC0;border-radius:27%"></div>
+        <span>闲观 · 墨滴</span>
+      </div>
+    </div>
+    <footer>
+      选定一个方向（也可以混搭，例如「书舟的形＋闲窗的色」）之后，我再往下做三件事：
+      拆成 adaptive icon 的前景与背景两层、按 72dp 安全区校正、生成各密度资源并装机看真实桌面。
+    </footer>
+  </section>
+
+</div>
+
+<script>
+const marks = {
+  A: `<svg viewBox="0 0 108 108" aria-hidden="true">
+        <path class="m" d="M54,29 C66,41 74.5,51 76.5,61 L54,61 Z"/>
+        <rect class="m" x="50.5" y="29" width="5" height="32" rx="2.5"/>
+        <path class="m" d="M23,61 L85,61 C82,70 70,77 54,77 C38,77 26,70 23,61 Z"/>
+        <path class="stroke" d="M38,84 C44,81 50,81 54,84 C58,87 64,87 70,84"
+              stroke-width="2.4" stroke-opacity=".5" stroke-linecap="round"/>
+      </svg>`,
+  B: `<svg viewBox="0 0 108 108" aria-hidden="true">
+        <rect class="stroke" x="29" y="29" width="50" height="50" rx="11" stroke-width="5"/>
+        <rect class="m" x="59.6" y="29" width="2.4" height="50"/>
+        <rect class="m" x="29" y="61.2" width="50" height="2.4"/>
+        <circle class="a" cx="68" cy="44" r="5.2"/>
+        <path class="stroke" d="M34,70 Q42,65.5 50,70" stroke-width="2.8" stroke-opacity=".75" stroke-linecap="round"/>
+      </svg>`,
+  C: `<svg viewBox="0 0 108 108" aria-hidden="true">
+        <path class="m" d="M54,28 C54,28 66.5,43 66.5,51 A12.5,12.5 0 0,1 41.5,51 C41.5,43 54,28 54,28 Z"/>
+        <path class="stroke" d="M34,76 Q43,71 54,76 Q65,81 74,76" stroke-width="2.4" stroke-opacity=".5" stroke-linecap="round"/>
+        <path class="stroke" d="M42,84 Q48,81 54,84 Q60,87 66,84" stroke-width="1.8" stroke-opacity=".28" stroke-linecap="round"/>
+      </svg>`
+};
+document.querySelectorAll('[data-icon]').forEach(el => {
+  el.innerHTML = '<div class="art">' + marks[el.dataset.icon] + '</div>';
+});
+</script>
+</body>
+</html>

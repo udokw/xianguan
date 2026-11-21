@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    闲观 icon：一颗大水滴落进学海，底下两道错开的波纹。
+    108x108 viewport，深海墨蓝底 + 月白水滴 + 半透明波纹，
+    全部收在 72dp 安全区内，圆形/方形遮罩都不会裁到图形。
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- 大水滴 -->
+    <path
+        android:fillColor="#EDF3F7"
+        android:pathData="M54,28
+            C54,28 66.5,43 66.5,51
+            A12.5,12.5 0 0,1 41.5,51
+            C41.5,43 54,28 54,28 Z" />
+
+    <!-- 近处波纹 -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#80EDF3F7"
+        android:strokeWidth="2.4"
+        android:strokeLineCap="round"
+        android:pathData="M34,76 Q43,71 54,76 Q65,81 74,76" />
+
+    <!-- 远处波纹 -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#47EDF3F7"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round"
+        android:pathData="M42,84 Q48,81 54,84 Q60,87 66,84" />
+</vector>

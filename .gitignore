@@ -1,0 +1,18 @@
+# Gradle / Android 构建产物
+.gradle/
+build/
+app/build/
+local.properties
+captures/
+*.iml
+.idea/
+
+# 本地打包产物与截图素材（不入库）
+dist/
+.screenshots/
+素材/
+
+# 系统 / 编辑器
+.DS_Store
+Thumbs.db
+.vscode/settings.json

@@ -1,0 +1,9 @@
+## 你每次发新版的操作
+1. 改 `app/build.gradle`：`versionName` 加 0.01、`versionCode` 加 1（例：1.0.49 / 61）。
+2. 同步改 `.github/workflows/android-release.yml` 顶部的 `VERSION_NAME` / `VERSION_CODE`（CI 会断言两处一致）。
+3. 提交后打 tag 并推送（例：`git tag v1.0.49 && git push origin v1.0.49`），GitHub Actions 自动出包并发 Release。
+4. 从 Release 下载 APK，改名为 `闲观-v1.0.49.apk`（三段版本号 + `.apk`，程序靠这个文件名识别版本）。
+5. 上传到分享目录 `/s/9dyOULa5` 下的 `GTStudy/安卓/` 里（旧版本留着没关系，程序取最大的版本号）。
+6. 分享必须保持 公开、不加提取码、长期有效——程序是匿名访客读接口，加了提取码或目录改名就读不到版本。
+
+如果哪天换了网盘或换了分享链接，改 `UpdateChecker.SHARE_ID`，并按需要调整 `APP_DIRS` / `ANDROID_DIRS` 再打一次包。

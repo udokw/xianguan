@@ -1,0 +1,49 @@
+plugins {
+    id 'com.android.application'
+}
+
+// 发布签名：CI 通过环境变量注入，本地可用 -PksFile 指到 G:\AI\keystore\knightchess-release.jks
+def ksFile = System.getenv("KS_FILE") ?: project.findProperty("ksFile")
+def ksPassword = System.getenv("KS_PASSWORD") ?: project.findProperty("ksPassword")
+def ksAlias = System.getenv("KS_ALIAS") ?: project.findProperty("ksAlias")
+def ksKeyPassword = System.getenv("KS_KEY_PASSWORD") ?: project.findProperty("ksKeyPassword")
+
+android {
+    namespace 'com.study.auto'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.study.auto"
+        minSdk 30
+        targetSdk 34
+        versionCode 60
+        versionName "1.0.48"
+    }
+
+    signingConfigs {
+        release {
+            if (ksFile) {
+                storeFile file(ksFile)
+                storePassword ksPassword
+                keyAlias ksAlias
+                keyPassword ksKeyPassword
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig ksFile ? signingConfigs.release : signingConfigs.debug
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+        encoding = 'UTF-8'
+    }
+}
+
+dependencies {
+}

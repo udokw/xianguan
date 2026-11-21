@@ -76,7 +76,9 @@ jobs:
       - name: 改名并上传产物
         run: |
           mkdir -p out
-          cp app/build/outputs/apk/release/app-release.apk "out/闲观-v${VERSION_NAME}.apk"
+          # GitHub 会把 Release 资产名里的中文抹掉，统一用 ASCII 名；
+          # 客户端同时认「闲观-vX.Y.Z.apk」和「xianguan-vX.Y.Z.apk」
+          cp app/build/outputs/apk/release/app-release.apk "out/xianguan-v${VERSION_NAME}.apk"
           ls -l out
 
       - uses: actions/upload-artifact@v4

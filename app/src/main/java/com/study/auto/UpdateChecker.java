@@ -47,9 +47,9 @@ public final class UpdateChecker {
     /** 安卓平台子目录名 */
     private static final String[] ANDROID_DIRS = {"安卓", "android"};
 
-    /** 文件名约定：闲观-v1.0.48.apk（也容忍 (1) 后缀、空格、全角破折号） */
+    /** 文件名约定：闲观-v1.0.48.apk 或 xianguan-v1.0.48.apk（也容忍 (1) 后缀、空格、全角破折号、丢失前缀） */
     private static final Pattern APK_VERSION = Pattern.compile(
-            "闲观[-_－— ]*[vV]?([0-9]+(?:\\.[0-9]+){1,3})\\s*(\\(\\d+\\))?\\.apk");
+            "(?i)^[-_－— ]*(?:闲观|xianguan|自动学习)?[-_－— ]*v([0-9]+(?:\\.[0-9]+){1,3})\\s*(?:\\(\\d+\\))?\\.apk$");
 
     private static final String UA =
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "

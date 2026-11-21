@@ -64,11 +64,13 @@ jobs:
           APK=app/build/outputs/apk/release/app-release.apk
           BT=$(ls -d "$ANDROID_SDK_ROOT/build-tools/"*/ | sort -V | tail -1)
           "$BT/apksigner" verify --print-certs "$APK" | tee signing.txt
-          # 统一发布密钥指纹（knightchess-release.jks）
-          grep -qi '13:FB:C9:83:CE:20:B3:DC:7B:FB:BB:C1:33:27:B3:97:69:20:9E:BE:84:AD:14:6D:7C:89:FE:58:2C:00:FB:DE' signing.txt \
+          # 统一发布密钥指纹（release.jks，apksigner 输出的 SHA-256 为小写无冒号）
+          grep -qi '13fbc983ce20b3dc7bfbbbc13327b39769209ebe84ad146d7c89fe582c00fbde' signing.txt \
             || (echo '签名指纹与统一发布密钥不一致'; exit 1)
-          "$BT/aapt" dump badging "$APK" | grep -E "package:|uses-permission:" | head -20
-          "$BT/aapt" dump badging "$APK" | grep -q "versionName='$VERSION_NAME'" \
+          AAPT="$BT/aapt"
+          [ -x "$AAPT" ] || AAPT="$BT/aapt2"
+          "$AAPT" dump badging "$APK" | tee badging.txt | grep -E "package:|uses-permission:" | head -20
+          grep -q "versionName='$VERSION_NAME'" badging.txt \
             || (echo 'APK versionName 不符'; exit 1)
 
       - name: 改名并上传产物

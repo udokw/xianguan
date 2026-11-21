@@ -100,7 +100,7 @@ jobs:
           ⚠️ 本版起改用统一发布签名，与 1.0.47 及更早版本签名不同。
           老用户必须先卸载旧版再安装本版（卸载会清空应用内设置）。
           EOF
-          gh release create "v${VERSION_NAME}" "out/闲观-v${VERSION_NAME}.apk" \
+          gh release create "v${VERSION_NAME}" "out/xianguan-v${VERSION_NAME}.apk" \
             --repo "$GITHUB_REPOSITORY" \
             --title "闲观 v${VERSION_NAME}" \
             --notes-file notes.md

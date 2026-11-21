@@ -86,15 +86,19 @@ jobs:
 
       - name: 发布 Release
         if: startsWith(github.ref, 'refs/tags/v')
-        uses: softprops/action-gh-release@v2
-        with:
-          files: out/*.apk
-          name: 闲观 v${{ env.VERSION_NAME }}
-          body: |
-            闲观（安卓）v${{ env.VERSION_NAME }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cat > notes.md <<EOF
+          闲观（安卓）v${VERSION_NAME}
 
-            - 更新检测改为直连飞机盘分享接口（不再依赖隐藏 WebView），失败提示带 HTTP 码、内容类型与实际地址
-            - 安装包下载到系统「下载」目录，完成后自动调起系统安装器
+          - 更新检测改为直连飞机盘分享接口（不再依赖隐藏 WebView），失败提示带 HTTP 码、内容类型与实际地址
+          - 安装包下载到系统「下载」目录，完成后自动调起系统安装器
 
-            ⚠️ 本版起改用统一发布签名，与 1.0.47 及更早版本签名不同。
-            老用户必须先卸载旧版再安装本版（卸载会清空应用内设置）。
+          ⚠️ 本版起改用统一发布签名，与 1.0.47 及更早版本签名不同。
+          老用户必须先卸载旧版再安装本版（卸载会清空应用内设置）。
+          EOF
+          gh release create "v${VERSION_NAME}" "out/闲观-v${VERSION_NAME}.apk" \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "闲观 v${VERSION_NAME}" \
+            --notes-file notes.md

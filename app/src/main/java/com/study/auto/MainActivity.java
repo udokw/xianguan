@@ -49,6 +49,7 @@ public class MainActivity extends Activity {
     private static final long GATE_TIMEOUT_MS = 30_000L;
     private static final int CHECK_STARTUP = 0;
     private static final int CHECK_PERIODIC = 1;
+    private static final int CHECK_MANUAL = 2;
 
     /**
      * 全屏更新遮罩是否打开（等待检测 / 发现新版本）。悬浮球启停点击据此被忽略，
@@ -67,9 +68,11 @@ public class MainActivity extends Activity {
 
     private FrameLayout gate;
     private View gateWait, gateUpdate;
-    private TextView gateOldVer, gateNewVer, gateDesc, gatePrimary;
+    private TextView gateOldVer, gateNewVer, gateDesc, gatePrimary, gateExit;
     private String pendingUpdateVersion, pendingUpdateUrl;
     private boolean startupGateWaiting;
+    /** 本次整屏提示是否由设置里的手动检测触发（是则「退出」改为「稍后再说」） */
+    private boolean gateFromManual;
     private int versionTaps;
     private long lastVersionTapAt;
 
@@ -369,6 +372,38 @@ public class MainActivity extends Activity {
         lpn.topMargin = dp(14);
         d.addView(note, lpn);
 
+        // 版本更新：常驻入口，手动检测一次；关闭自动检测后也随时能主动查
+        TextView upLabel = tv("版本更新", 12, C_T3, false);
+        upLabel.setLetterSpacing(0.12f);
+        LinearLayout.LayoutParams lpUp = lp(-1, -2);
+        lpUp.topMargin = dp(20);
+        lpUp.bottomMargin = dp(10);
+        d.addView(upLabel, lpUp);
+
+        LinearLayout upCard = new LinearLayout(this);
+        upCard.setOrientation(LinearLayout.HORIZONTAL);
+        upCard.setGravity(Gravity.CENTER_VERTICAL);
+        upCard.setBackground(roundBg(0xFFF7F8FA, 18, 0, 0));
+        upCard.setPadding(dp(16), dp(13), dp(12), dp(13));
+
+        LinearLayout upText = new LinearLayout(this);
+        upText.setOrientation(LinearLayout.VERTICAL);
+        upText.addView(tv("检查新版本", 14, C_T1, true), lp(-1, -2));
+        TextView upCur = tv("当前 v" + appVersionName(), 11, C_T3, false);
+        LinearLayout.LayoutParams lpCur = lp(-1, -2);
+        lpCur.topMargin = dp(3);
+        upText.addView(upCur, lpCur);
+        upCard.addView(upText, lp(0, -2, 1));
+
+        TextView upBtn = tv("版本更新", 13, Color.WHITE, true);
+        upBtn.setGravity(Gravity.CENTER);
+        upBtn.setBackground(roundBg(C_PRIMARY, 14, 0, 0));
+        upBtn.setPadding(dp(16), dp(9), dp(16), dp(9));
+        upBtn.setOnClickListener(v -> startManualUpdateCheck());
+        upCard.addView(upBtn, lp(-2, -2));
+
+        d.addView(upCard, lp(-1, -2));
+
         d.addView(new View(this), lp(-1, 0, 1));
         d.addView(tv("v" + appVersionName(), 11, C_T3, false), lp(-1, -2));
         return d;
@@ -472,7 +507,16 @@ public class MainActivity extends Activity {
         TextView exit = tv("退出", 14, C_T2, true);
         exit.setGravity(Gravity.CENTER);
         exit.setBackground(roundBg(Color.WHITE, 25, 1, 0xFFE5E6EB));
-        exit.setOnClickListener(v -> exitApp());
+        exit.setOnClickListener(v -> {
+            if (gateFromManual) {
+                // 手动检测触发的提示不能把 App 关掉，只关提示回设置
+                gateFromManual = false;
+                closeGate();
+            } else {
+                exitApp();
+            }
+        });
+        gateExit = exit;
         LinearLayout.LayoutParams lpL = lp(0, dp(50), 1);
         lpL.rightMargin = dp(10);
         btns.addView(exit, lpL);
@@ -542,6 +586,7 @@ public class MainActivity extends Activity {
                 : "没取到下载直链，点「去下载」在浏览器打开更新页。"
                 + (error == null ? "" : "\n" + error));
         gatePrimary.setText(downloadUrl != null ? "立即更新" : "去下载");
+        gateExit.setText(gateFromManual ? "稍后再说" : "退出");
         gateWait.setVisibility(View.GONE);
         gateUpdate.setVisibility(View.VISIBLE);
         openGate();
@@ -549,7 +594,8 @@ public class MainActivity extends Activity {
 
     /**
      * @param mode CHECK_STARTUP：启动强制检测，没发现更新（含检测失败）就放行主界面；
-     *             CHECK_PERIODIC：运行中每 5 分钟检测，发现更新先暂停学习再整屏提示。
+     *             CHECK_PERIODIC：运行中每 5 分钟检测，发现更新先暂停学习再整屏提示；
+     *             CHECK_MANUAL：设置里手动点「版本更新」，没有新版本时给一句结果提示。
      */
     private void checkUpdate(int mode) {
         if (mode == CHECK_STARTUP && !AppSettings.autoUpdate(this)) {
@@ -568,16 +614,44 @@ public class MainActivity extends Activity {
                     closeGate();
                 return;
             }
+            if (mode == CHECK_MANUAL) {
+                if (hasNew) {
+                    pauseForUpdate();
+                    showGateUpdate(latest, downloadUrl, error);
+                } else {
+                    closeGate();
+                    Toast.makeText(this, error != null ? error
+                                    : "已是最新版本 v" + appVersionName(),
+                            Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
             if (hasNew) {
                 pauseForUpdate();
                 showGateUpdate(latest, downloadUrl, error);
             }
         });
-        if (!started && mode == CHECK_STARTUP) {
-            // 已有检测在跑（例如重复触发）：不让遮罩一直挂着
-            startupGateWaiting = false;
-            closeGate();
+        if (!started) {
+            if (mode == CHECK_STARTUP) {
+                // 已有检测在跑（例如重复触发）：不让遮罩一直挂着
+                startupGateWaiting = false;
+                closeGate();
+            } else if (mode == CHECK_MANUAL) {
+                startupGateWaiting = false;
+                closeGate();
+                Toast.makeText(this, "正在检测中，请稍候", Toast.LENGTH_SHORT).show();
+            }
         }
+    }
+
+    /** 设置里的「版本更新」：关掉抽屉，复用手动检测流程（有新版走同一个整屏提示） */
+    private void startManualUpdateCheck() {
+        closeDrawer();
+        gateFromManual = true;
+        showGateWaiting();
+        startupGateWaiting = true;
+        ui.postDelayed(() -> checkUpdate(CHECK_MANUAL), 230);
+        ui.postDelayed(gateTimeout, GATE_TIMEOUT_MS);
     }
 
     /** 检测到新版本：先暂停学习，再整屏提示，避免旧版本继续跑 */
